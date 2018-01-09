@@ -1,0 +1,39 @@
+#!/bin/bash
+
+
+USER='' # name.firstname@epitech.eu
+USER2='' # login epitech
+MDP='' # mot de passe
+
+SEND_MDP="`echo -n "$MDP" | sha512sum | cut -f1 -d' '`"
+
+if [ $# = 0 ]
+then
+    echo "rep:
+    -c/create repoName(create)
+    -l/list (list)
+    -s/setacl user (setacl)
+    -d/delete repoName (delete)";
+fi
+
+case $1 in
+    "-c" | "create")
+	blih -u $USER -t $SEND_MDP repository create $2
+	blih -u $USER -t $SEND_MDP repository setacl $2 ramassage-tek r
+	git clone git@git.epitech.eu:/$USER2/$2
+	;;
+    "-l" | "list")
+	blih -u $USER -t $SEND_MDP repository list
+	;;
+    "-s" | "setacl")
+	blih -u $USER -t $SEND_MDP repository setacl $2 $3 rw
+	;;
+    "-d" | "delete")
+	echo "Confirm ? y/n"
+	read conf
+	if [ $conf = "y" ]
+	then
+	    blih -u $USER -t $SEND_MDP repository delete $2
+	fi
+	;;
+esac
