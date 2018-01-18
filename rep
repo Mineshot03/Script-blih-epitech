@@ -10,10 +10,11 @@ SEND_MDP="`echo -n "$MDP" | sha512sum | cut -f1 -d' '`"
 if [ $# = 0 ]
 then
     echo "rep:
-    -c/create repoName(create)
-    -l/list (list)
-    -s/setacl user (setacl)
-    -d/delete repoName (delete)";
+    -c/create [repository]
+    -l/list
+    -s/setacl [reposiroty] [user] [acl]
+    -g/getacl [repository]
+    -d/delete [repository]";
 fi
 
 case $1 in
@@ -26,7 +27,10 @@ case $1 in
 	blih -u $USER -t $SEND_MDP repository list
 	;;
     "-s" | "setacl")
-	blih -u $USER -t $SEND_MDP repository setacl $2 $3 rw
+	blih -u $USER -t $SEND_MDP repository setacl $2 $3 $4
+	;;
+    "-g" | "getacl")
+	blih -u $USER -t $SEND_MDP repository getacl $2
 	;;
     "-d" | "delete")
 	echo "Confirm ? y/n"
